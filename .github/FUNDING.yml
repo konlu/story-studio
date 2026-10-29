@@ -1,0 +1,5 @@
+# GitHub Sponsor 官方赞赏配置文件
+# 项目主页会自动激活粉色 "❤️ Sponsor" 按钮
+
+custom:
+  - https://github.com/konlu/story-studio#sponsor
