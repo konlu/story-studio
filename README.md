@@ -5,7 +5,7 @@
 **从「选题 → 文案 → 配音 → 配图 → 剪映草稿」的一站式 AI 短视频内容创作 Skill**
 
 [![Skill Type](https://img.shields.io/badge/AI_Agent-Skill-blue?style=flat-square)](#)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-lightgrey.svg?style=flat-square)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/konlu/story-studio?style=flat-square)](https://github.com/konlu/story-studio)
 [![Track](https://img.shields.io/badge/赛道-历史叙事_%7C_人物故事-orange?style=flat-square)](#)
 [![ corpus](https://img.shields.io/badge/内置对标库-370%2B_篇高赞文案-success?style=flat-square)](#)
@@ -327,6 +327,6 @@ Story Studio 的诞生离不开以下优秀开源项目与基础设施的支持�
 
 ## 📄 开源许可证与声明
 
-- **代码与技能规范**：本项目基于 **[MIT License](LICENSE)** 协议开源，欢迎自由使用、二次开发与衍生创作。
+- **代码与技能规范**：本项目基于 **[CC BY-NC-SA 4.0](LICENSE)**（知识共享 署名-非商业性使用-相同方式共享 4.0 国际许可协议）开源。**仅供个人学习交流与非商业创作使用，严禁任何形式的商业转售、付费二次打包、商业课程分发或作为商业付费工具提供服务**。
 - **内容与语料说明**：本项目内置的对标文案语料库仅用于叙事结构、开头钩子与写作技法学习研究，**不直接作为已核实的历史事实依据**；AI 生成的画风参考图与封面样例亦非历史原照。
 - **第三方生态**：第三方依赖库（如 `pyJianYingDraft`、`Coli`、`websockets` 等）均遵循其各自的开源许可证分发，本仓库不内嵌或重新分发上述外部库源码。
