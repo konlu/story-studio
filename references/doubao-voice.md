@@ -64,12 +64,30 @@ dry-run仅核验本地文本和音色参数，不读取Key、不联网；成功�
 
 鉴权、额度、资源或音色错误时停在配音阶段，提示具体缺口，保留已完成文稿。网络超时或不完整流可能已计费，脚本不自动重试；Agent先核对partial、已有MP3及控制台请求状态，明确是否需要重新合成。MP3已成功但后续转录/生图失败时只续做下游。
 
+## 可选：Seed-Audio 音效与配乐
+
+需要环境声、音效、配乐或整段氛围音轨时使用，模型 `seed-audio-1.0`，走 HTTP `https://openspeech.bytedance.com/api/v3/tts/create`。它按提示词直接生成音频（可包含人声），与人声TTS是两条独立接口，不替代本期口播配音，也不产生字幕。
+
+```text
+printf '%s' '<Key>' | "<配置的Python>" "<技能绝对路径>/scripts/seed_audio_tts.py" configure --key-stdin
+"<配置的Python>" "<技能绝对路径>/scripts/seed_audio_tts.py" check
+"<配置的Python>" "<技能绝对路径>/scripts/seed_audio_tts.py" generate --text-file "<项目>/sfx.txt" --output "<项目>/audio/sfx-01.mp3" --dry-run
+"<配置的Python>" "<技能绝对路径>/scripts/seed_audio_tts.py" generate --text-file "<项目>/sfx.txt" --output "<项目>/audio/sfx-01.mp3" --confirm-billable
+```
+
+- 鉴权同时需要 `X-Api-Key` 与 `X-Api-Resource-Id: seed-audio-1.0`，脚本自动带上。缺少resource头时网关返回45000000并声称app key不存在，不能据此判定Key失效或要求用户重新取Key。
+- Key保存在用户数据目录的独立凭据文件，与DOUBAO_TTS_API_KEY分开；不在命令参数、shell历史、项目JSON或日志中出现。环境变量`SEED_AUDIO_API_KEY`优先。
+- 默认MP3、48000Hz、声道与码率由服务决定；可调format、sample_rate、pitch/speech/loudness rate（-50..100）。输出拒绝覆盖已有文件，拒绝写入技能目录，扩展名必须与format一致。
+- dry-run只核验文本与参数，不读取Key、不联网、不计费。实际请求按生成音频时长计费；401/403等4xx不计费，5xx或网络中断按可能已计费处理。脚本不自动重试。
+- 生成后用ffprobe复核codec、采样率、声道、时长与字节数；未试听不称听过。返回的签名URL默认不打印，确需交付链接时才加--print-url。
+- 与人声分开生成时，音轨按最终配音的SRT时间轴对齐后再进草稿；单独用它生成含人声的整段音频时，仍以Coli转录结果核对文句，不把“有声音”当作口播正确。
+
 ## 接续转录、配图与草稿
 
 1. 检查MP3完整解码、正文开头结尾、专名发音与漏读；未试听不称听过。再调用内置[配图模块](../modules/history-image/GUIDE.md)的Coli脚本，识别最终MP3，保留音频哈希与原始结果，对照文案修正错字。
 2. 使用真实SRT与上下文确定分镜时间，重复句消歧，不按字数或镜数均分时长；实际生图仍需遵守本次配图开关、画风和数量选择。
 3. 调用内置[草稿模块](../modules/render-history-video/GUIDE.md)，传同版MP3、核验SRT、分镜与实际图片，沿用本项目画幅；默认仍为9:16，不继承参考技能的16:9。字幕用于定位不等于上屏。
 
-豆包这里只负责TTS，始终enable_subtitle=false。字幕使用本机Coli，不调用或恢复已停用的火山字幕API及其凭据。交付MP3、SRT、图片和草稿时区分实际生成、结构验证、试听和剪映预览范围。
+豆包人声TTS这里只负责口播，始终enable_subtitle=false；Seed-Audio音轨是可选补充，同样不产生字幕。字幕使用本机Coli，不调用或恢复已停用的火山字幕API及其凭据。交付MP3、SRT、图片和草稿时区分实际生成、结构验证、试听和剪映预览范围。
 
 协议及参数依据：[用户指定的豆包双向WebSocket官方文档](https://docs.volcengine.com/docs/DoubaoVoice/bidirectional-streaming-text-to-speech-websocket?lang=zh)、[官方协议附件](https://portal.volccdn.com/obj/volcfe/cloud-universal-doc/upload_5ec6e28945592c909158dc1e2cf9a89c.zip)、[websockets客户端文档](https://websockets.readthedocs.io/en/15.0.1/reference/asyncio/client.html)。本项目自行实现所需二进制帧与流程，不内嵌官方协议附件源码。
