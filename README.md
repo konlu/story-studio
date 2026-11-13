@@ -319,7 +319,7 @@ Story Studio 的诞生离不开以下优秀开源项目与基础设施的支持�
 
 欢迎自媒体创作者、独立开发者、AI 爱好者一起交流探索新玩法：
 
-- **微信咨询**：添加个人微信：muyu1888（请备注：`Story Studio` 或 `自媒体创作`）
+- **微信咨询**：添加个人微信：lukon102（请备注：`Story Studio` 或 `自媒体创作`）
 - **电子邮箱**：`lukonn@163.com`
 - **问题反馈**：欢迎在 [GitHub Issues](https://github.com/konlu/story-studio/issues) 提交 Bug 反馈与新功能建议
 
